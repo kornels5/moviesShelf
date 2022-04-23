@@ -1,11 +1,15 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/react';
 import React, { FC } from 'react';
+
+import { Button, Input, FormGroup } from './styledComponents';
 
 interface FormLoginProps {
   onSubmit: (obj: { username: string; password: string }) => void;
-  buttonText: string;
+  submitButton: any;
 }
 
-const FormLogin: FC<FormLoginProps> = ({ onSubmit, buttonText }) => {
+const FormLogin: FC<FormLoginProps> = ({ onSubmit, submitButton }) => {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const target = e.target as typeof e.target & {
@@ -20,18 +24,28 @@ const FormLogin: FC<FormLoginProps> = ({ onSubmit, buttonText }) => {
     });
   }
   return (
-    <form onSubmit={e => handleSubmit(e)}>
-      <div>
+    <form
+      css={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        '> div': {
+          margin: '10px auto',
+          width: '100%',
+          maxWidth: '300px',
+        },
+      }}
+      onSubmit={e => handleSubmit(e)}
+    >
+      <FormGroup>
         <label htmlFor="username">Username</label>
-        <input id="username" name="username" />
-      </div>
-      <div>
+        <Input id="username" />
+      </FormGroup>
+      <FormGroup>
         <label htmlFor="password">Password</label>
-        <input id="password" type="password" name="password" />
-      </div>
-      <div>
-        <button type="submit">{buttonText}</button>
-      </div>
+        <Input id="password" type="password" />
+      </FormGroup>
+      <div>{React.cloneElement(submitButton, { type: 'submit' })}</div>
     </form>
   );
 };
